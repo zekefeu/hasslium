@@ -1,6 +1,6 @@
 "use strict";
 
-type macroType = [
+export type macroType = [
 	macro: string,
 	token: string
 ]
