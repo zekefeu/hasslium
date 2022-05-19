@@ -1,0 +1,27 @@
+{
+  "name": "@fuka-g/hasslium",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fuka-g/hasslium.git"
+  },
+  "author": "fuka-g <fuka_main@protonmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fuka-g/hasslium/issues"
+  },
+  "homepage": "https://github.com/fuka-g/hasslium",
+  "devDependencies": {
+    "@types/node": "^17.0.31",
+    "@typescript-eslint/eslint-plugin": "^5.25.0",
+    "@typescript-eslint/parser": "^5.25.0",
+    "eslint": "^8.15.0",
+    "jest": "^28.1.0",
+    "typescript": "^4.6.4"
+  }
+}
