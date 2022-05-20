@@ -55,7 +55,7 @@ hasslium.processOne(fs.readFileSync("yourFilePath.js").toString().split("\n"), {
 
 ```
 🟣 #assert:	 	Obsolete Features
-🔴 #define:	 	Object-like Macros
+🟠 #define:	 	Object-like Macros
 🔴 #elif:	 	Elif
 🔴 #else:	 	Else
 🔴 #endif:	 	Ifdef
@@ -77,7 +77,7 @@ hasslium.processOne(fs.readFileSync("yourFilePath.js").toString().split("\n"), {
 🟣 #pragma once:	 	Pragmas
 🟣 #sccs:	 	Other Directives
 🟣 #unassert:	 	Obsolete Features
-🔴 #undef:	 	Undefining and Redefining Macros
+🟠 #undef:	 	Undefining and Redefining Macros
 🔴 #warning:	 	Diagnostics
 ```
 
