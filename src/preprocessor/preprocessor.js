@@ -16,14 +16,15 @@ export function processOne(input, options, callback) {
     // if (input.length === 0) callback("The input is empty.", null);
     // if (!options) callback("No options provided", null);
     if (verbose) {
-        console.log("Verbose mode:", verbose);
-        console.log("\nRaw options:", options);
-        console.log("\nDefined macros:");
+        console.log("v-001 Verbose mode:", verbose);
+        console.log("\nv-002 Raw options:", options);
+        console.log("\nv-003 Defined macros:");
         options.macros.forEach(macro => {
-            console.log(`- ${macro[0]}: ${macro[1]}`);
+            console.log(`v-013 - ${macro[0]}: ${macro[1]}`);
         });
-        console.log("\nInput:", input);
+        console.log("\nv-004 Input:", input);
     }
+    // Initialization
     // eslint-disable-next-line prefer-const
     let activeMacros = [];
     // eslint-disable-next-line prefer-const
@@ -33,17 +34,65 @@ export function processOne(input, options, callback) {
         activeMacros.push(macro);
     });
     if (verbose)
-        console.log("--- Preprocessing --- ");
+        console.log("\nv-005 === Preprocessing ===\n");
+    // Loop through each given line
     input.forEach(line => {
         if (verbose)
-            console.log(">", line);
+            console.log("v-006 ==>", line);
+        // Line without indentation
         const trimmedLine = line.trim();
         if (trimmedLine.startsWith("//#")) {
-            if (verbose)
-                console.log("Line is a macro");
-            const fullCommand = trimmedLine.substring(3, trimmedLine.length).trim();
-            if (verbose)
-                console.log("Command:", fullCommand);
+            // Directive processing & tokenization
+            // Get the directive without '//#'
+            const fullDirective = trimmedLine.substring(3, trimmedLine.length).trim();
+            /**
+             * Types of directives
+             *
+             * -> define
+             * directive macro token
+             *
+             * -> undef, ifdef, ifndef, else, endif
+             * directive macro
+             *
+             * -> if, elif
+             * directive expression
+             *
+             * -> error, warning
+             * directive message
+             */
+            // Make an array out of the directive
+            const directiveArray = fullDirective.split(" ");
+            // Create an array containing our directive and arguments
+            // Note to self: currentDirective is an array (tuple ?), not an object
+            const currentDirective = [
+                directiveArray.shift(),
+                directiveArray.join(" ") // arguments: put the array back together
+            ];
+            if (verbose) {
+                console.log("v-007 Parsed directive:", currentDirective);
+            }
+            switch (currentDirective[0]) {
+                case "define":
+                    if (verbose)
+                        console.log("v-008 Directive: define");
+                    break;
+                case "undef":
+                    if (verbose)
+                        console.log("v-009 Directive: undef");
+                    break;
+                case "if":
+                    if (verbose)
+                        console.log("v-010 Directive: if");
+                    break;
+                case "ifdef":
+                    if (verbose)
+                        console.log("v-011 Directive: ifdef");
+                    break;
+                default:
+                    if (verbose)
+                        console.log("v-012 Unknown directive.");
+                    break;
+            }
         }
         else {
             // Line is not a macro
