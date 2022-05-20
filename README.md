@@ -14,6 +14,7 @@ Bringing GNU GCC's preprocessor's features to JS/TS.
  - TESTING
  - function macros
  - nesting macros handling
+ - ifdef, ifndef
 
  
 ```
@@ -59,4 +60,36 @@ bar = 4;
 
 //# error message
 
+```
+
+## GCC's features
+
+[See the original preprocessor's features.](https://gcc.gnu.org/onlinedocs/cpp/index.html)
+
+```
+#assert:	 	Obsolete Features
+#define:	 	Object-like Macros
+#elif:	 	Elif
+#else:	 	Else
+#endif:	 	Ifdef
+#error:	 	Diagnostics
+#ident:	 	Other Directives
+#if:	 	Conditional Syntax
+#ifdef:	 	Ifdef
+#ifndef:	 	Ifdef
+#import:	 	Alternatives to Wrapper #ifndef
+#include:	 	Include Syntax
+#include_next:	 	Wrapper Headers
+#line:	 	Line Control
+#pragma GCC dependency:	 	Pragmas
+#pragma GCC error:	 	Pragmas
+#pragma GCC poison:	 	Pragmas
+#pragma GCC system_header:	 	System Headers
+#pragma GCC system_header:	 	Pragmas
+#pragma GCC warning:	 	Pragmas
+#pragma once:	 	Pragmas
+#sccs:	 	Other Directives
+#unassert:	 	Obsolete Features
+#undef:	 	Undefining and Redefining Macros
+#warning:	 	Diagnostics
 ```
