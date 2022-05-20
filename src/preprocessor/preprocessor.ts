@@ -16,6 +16,14 @@ export interface processOptions {
 }
 
 /**
+ * @deprecated use hasslium.process() instead
+ */
+export function processOne(input: string[], options: processOptions, callback: (error: string, output: string[]) => void) {
+	console.error(new Error("DeprecationWarning: hasslium.processOne() is deprecated. Use hasslium.process() instead."));
+	process(input, options, callback);
+}
+
+/**
  * The library's main function. Takes an array of strings and processes it with the given options.
  * @param input The input array
  * @param options See above
@@ -25,7 +33,7 @@ export interface processOptions {
  * 
  * TODO: rewrite doc
  */
-export function processOne(input: string[], options: processOptions, callback: (error: string, output: string[]) => void) {
+export function process(input: string[], options: processOptions, callback: (error: string, output: string[]) => void) {
 
 	// Arguments validation & parsing
 	const verbose = options.verbose;
@@ -34,13 +42,13 @@ export function processOne(input: string[], options: processOptions, callback: (
 
 	// if (input.length === 0) callback("The input is empty.", null);
 	// if (!options) callback("No options provided", null);
-	
+
 	if (verbose) {
 		console.log("v-001 │ Verbose mode:", verbose);
 		console.log("\nv-002 │ Raw options:", options);
-	
+
 		console.log("\nv-003 │ Defined macros:");
-		
+
 		options.macros.forEach(macro => {
 			console.log(`v-013 │ - ${macro[0]}: ${macro[1]}`);
 		});
@@ -74,9 +82,9 @@ export function processOne(input: string[], options: processOptions, callback: (
 
 		// Line without indentation
 		const trimmedLine = line.trim();
-		
+
 		if (trimmedLine.startsWith("//#")) {
-			
+
 			// Directive processing & tokenization
 
 			// Get the directive without '//#'
@@ -109,11 +117,11 @@ export function processOne(input: string[], options: processOptions, callback: (
 			];
 
 			if (verbose) console.log("v-007 │ Parsed directive:", currentDirective);
-			
+
 			switch (currentDirective[0]) {
 				case "define": {
 					if (verbose) console.log("v-008 │ Directive: define");
-					
+
 					const argumentsArray = currentDirective[1].split(" ");
 
 					// Defining the macro we want to add
@@ -124,8 +132,8 @@ export function processOne(input: string[], options: processOptions, callback: (
 
 					if (macro[0] && macro[1]) {
 						activeMacros.push(macro);
-						if (verbose)  console.log("v-016 │ New macros list:", activeMacros);
-						
+						if (verbose) console.log("v-016 │ New macros list:", activeMacros);
+
 					} else {
 						if (verbose) console.log("v-015 │ Unknown macro definition:", macro);
 					}
@@ -133,15 +141,15 @@ export function processOne(input: string[], options: processOptions, callback: (
 				}
 				case "undef": {
 					if (verbose) console.log("v-009 │ Directive: undef");
-					
+
 					// Argument array (first value contains the macro we want to remove, we don't care about the rest)
 					const argumentsArray = currentDirective[1].split(" ");
 
 					if (argumentsArray[0]) {
-						
+
 						// Filtering the macros by their key
 						activeMacros = activeMacros.filter((macro) => { return macro[0] !== argumentsArray[0]; });
-						
+
 						if (verbose) {
 							console.log("v-018 │ Removing macro:", argumentsArray[0]);
 							console.log("v-019 │ New macros list:", activeMacros);
@@ -153,7 +161,7 @@ export function processOne(input: string[], options: processOptions, callback: (
 				}
 				case "if": {
 					if (verbose) console.log("v-010 │ Directive: if");
-					
+
 					break;
 				}
 				case "elif": {
@@ -163,12 +171,12 @@ export function processOne(input: string[], options: processOptions, callback: (
 				}
 				case "endif": {
 					if (verbose) console.log("v-024 │ Directive: endif");
-					
+
 					break;
 				}
 				case "else": {
 					if (verbose) console.log("v-025 │ Directive: else");
-					
+
 					break;
 				}
 				case "ifdef": {
@@ -197,10 +205,10 @@ export function processOne(input: string[], options: processOptions, callback: (
 					if (verbose) console.log("v-022 │ Directive: error");
 
 					let message = currentDirective[1];
-						
+
 					// If no error is specified, return a generic message
 					if (!message) message = "Unknown error.";
-						
+
 					// Log to stderr and callback
 					console.error("Error: " + message);
 					callback("Error: " + message, null);
@@ -218,14 +226,14 @@ export function processOne(input: string[], options: processOptions, callback: (
 			// Apply macro filters, etc
 		}
 	});
-	
+
 	if (verbose) {
 		const endTime = new Date();
 		const timeTook = endTime.getTime() - startTime.getTime();
-		
+
 		console.log("\nv-017 │ === Preprocessing took " + timeTook + " ms ===\n");
 	}
-	
+
 	callback(null, outputFile);
 }
 
