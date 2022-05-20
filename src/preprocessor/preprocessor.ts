@@ -51,10 +51,12 @@ export function processOne(input: string[], options: processOptions, callback: (
 	// eslint-disable-next-line prefer-const
 	let outputFile = [];
 
-	options.macros.forEach(macro => {
-		//console.log(macro);
-		activeMacros.push(macro);
-	});
+	if (options.macros.length > 0) {
+		options.macros.forEach(macro => {
+			//console.log(macro);
+			activeMacros.push(macro);
+		});
+	}
 
 	if (verbose) console.log("\nv-005 === Preprocessing ===\n");
 
