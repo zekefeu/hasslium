@@ -13,12 +13,12 @@ The documentation is under construction, but should be informative enough for no
 For now, no CLI support has been added yet. The only way to run it is through a js script file.
 
 ```ts
-// hasslim.processOne(input: string[], options: processOptions, callback: (error: string, output: string[]))
+// hasslim.process(input: string[], options: processOptions, callback: (error: string, output: string[]))
 
 import * as hasslium from "@fuka-g/hasslium";
 import * as fs from "fs";
 
-hasslium.processOne(fs.readFileSync("yourFilePath.js").toString().split("\n"), {}, (error, output) => {
+hasslium.process(fs.readFileSync("yourFilePath.js").toString().split("\n"), {}, (error, output) => {
 	if (error) {
 		console.error(error);
 	} else {
