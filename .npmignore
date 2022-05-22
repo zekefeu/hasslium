@@ -2,3 +2,7 @@
 CODE_OF_CONDUCT.md
 test/
 coverage/
+jest.config.cjs
+tsconfig.json
+.eslintignore
+.eslintrc.json
