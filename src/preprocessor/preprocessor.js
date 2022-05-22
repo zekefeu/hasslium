@@ -1,13 +1,6 @@
 "use strict";
 import { evalExpression } from "./eval.js";
 /**
- * @deprecated use hasslium.process() instead
- */
-export function processOne(input, options, callback) {
-    console.error(new Error("DeprecationWarning: hasslium.processOne() is deprecated. Use hasslium.process() instead."));
-    process(input, options, callback);
-}
-/**
  * The library's main function. Takes an array of strings and processes it with the given options.
  * @param input The input array
  * @param options See above
@@ -222,7 +215,7 @@ export function process(input, options, callback) {
                         // If no warning is specified, return a generic message
                         if (!message)
                             message = "Unknown error.";
-                        // Log to stderr and callback
+                        // Log to stderr
                         console.error("Warning: " + message);
                     }
                     break;

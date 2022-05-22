@@ -224,7 +224,7 @@ export function process(input: string[], options: processOptions, callback: (err
 					// Go through all the macros and check if the macro we're looking for is defined
 					// and push it to the conditional stack
 					const filterResult = !!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }).length;
-					
+
 					conditionalStack.push(filterResult);
 					executedStack.push(filterResult);
 					break;
@@ -260,7 +260,7 @@ export function process(input: string[], options: processOptions, callback: (err
 						// If no warning is specified, return a generic message
 						if (!message) message = "Unknown error.";
 	
-						// Log to stderr and callback
+						// Log to stderr
 						console.error("Warning: " + message);
 					}
 					break;
