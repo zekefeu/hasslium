@@ -47,7 +47,7 @@ hasslium.process(fs.readFileSync("yourFilePath.js").toString().split("\n"), {}, 
 
 🔴 - Unimplemented
 
-🟠 - Working prototype
+🟠 - Working prototype (not tested yet)
 
 🟢 - Fully implemented
 
@@ -56,14 +56,14 @@ hasslium.process(fs.readFileSync("yourFilePath.js").toString().split("\n"), {}, 
 ```
 🟣 #assert:	 	Obsolete Features
 🟠 #define:	 	Object-like Macros
-🔴 #elif:	 	Elif
-🔴 #else:	 	Else
-🔴 #endif:	 	Ifdef
-🔴 #error:	 	Diagnostics
+🟠 #elif:	 	Elif
+🟠 #else:	 	Else
+🟠 #endif:	 	Ifdef
+🟠 #error:	 	Diagnostics
 🟣 #ident:	 	Other Directives
-🔴 #if:	 	Conditional Syntax
-🔴 #ifdef:	 	Ifdef
-🔴 #ifndef:	 	Ifdef
+🟠 #if:	 	Conditional Syntax
+🟠 #ifdef:	 	Ifdef
+🟠 #ifndef:	 	Ifdef
 🟣 #import:	 	Alternatives to Wrapper #ifndef
 🟣 #include:	 	Include Syntax
 🟣 #include_next:	 	Wrapper Headers
@@ -78,7 +78,7 @@ hasslium.process(fs.readFileSync("yourFilePath.js").toString().split("\n"), {}, 
 🟣 #sccs:	 	Other Directives
 🟣 #unassert:	 	Obsolete Features
 🟠 #undef:	 	Undefining and Redefining Macros
-🔴 #warning:	 	Diagnostics
+🟠 #warning:	 	Diagnostics
 ```
 
 ## Syntax
