@@ -12,6 +12,10 @@ console.log(TEST);
 
 function hello() {
 	console.log("world");
+	//# ifdef ERROR_TEST
+	console.log("lol");
+	//# endif
+
 }
 
 hello();
