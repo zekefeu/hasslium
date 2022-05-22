@@ -39,6 +39,8 @@ export function process(input, options, callback) {
     let outputArray = [];
     // eslint-disable-next-line prefer-const
     let conditionalStack = [];
+    // eslint-disable-next-line prefer-const
+    let executedStack = [];
     if (options.macros.length > 0) {
         options.macros.forEach(macro => {
             if (macro[0] && macro[1]) {
@@ -135,8 +137,10 @@ export function process(input, options, callback) {
                     const evalResult = evalExpression(currentDirective[1], activeMacros);
                     if (verbose)
                         console.log("v-032 │ Evaluation result:", evalResult);
-                    if (evalResult !== null)
+                    if (evalResult !== null) {
                         conditionalStack.push(evalResult);
+                        executedStack.push(evalResult);
+                    }
                     else if (verbose)
                         console.log("v-031 │ Expression is invalid");
                     break;
@@ -144,13 +148,20 @@ export function process(input, options, callback) {
                 case "elif": {
                     if (verbose)
                         console.log("v-023 │ Directive: elif");
+                    console.log(conditionalStack, executedStack);
+                    if (executedStack[executedStack.length - 1])
+                        conditionalStack[conditionalStack.length - 1] = false;
                     if (conditionalStack.length > 0 && conditionalStack[conditionalStack.length - 1] === false) {
-                        conditionalStack.pop();
                         const evalResult = evalExpression(currentDirective[1], activeMacros);
                         if (verbose)
                             console.log("v-034 │ Evaluation result:", evalResult);
-                        if (evalResult !== null)
-                            conditionalStack.push(evalResult);
+                        if (evalResult !== null) {
+                            if (!executedStack[executedStack.length - 1]) {
+                                conditionalStack[conditionalStack.length - 1] = evalResult;
+                            }
+                            if (evalResult)
+                                executedStack[executedStack.length - 1] = true;
+                        }
                         else if (verbose)
                             console.log("v-035 │ Expression is invalid");
                     }
@@ -160,14 +171,18 @@ export function process(input, options, callback) {
                     if (verbose)
                         console.log("v-024 │ Directive: endif");
                     conditionalStack.pop();
+                    executedStack.pop();
                     break;
                 }
                 case "else": {
                     if (verbose)
                         console.log("v-025 │ Directive: else");
                     if (conditionalStack.length > 0) {
-                        if (conditionalStack[conditionalStack.length - 1] === false)
+                        if (conditionalStack[conditionalStack.length - 1] === false && executedStack[executedStack.length - 1] === false) {
                             conditionalStack[conditionalStack.length - 1] = true;
+                        }
+                        else
+                            conditionalStack[conditionalStack.length - 1] = false;
                     }
                     break;
                 }
@@ -176,7 +191,9 @@ export function process(input, options, callback) {
                         console.log("v-011 │ Directive: ifdef");
                     // Go through all the macros and check if the macro we're looking for is defined
                     // and push it to the conditional stack
-                    conditionalStack.push(!!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }));
+                    const filterResult = !!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; });
+                    conditionalStack.push(filterResult);
+                    executedStack.push(filterResult);
                     break;
                 }
                 case "ifndef": {
@@ -184,30 +201,58 @@ export function process(input, options, callback) {
                         console.log("v-026 │ Directive: ifndef");
                     // Go through all the macros and check if the macro we're looking for is not defined
                     // and push it to the conditional stack
-                    conditionalStack.push(!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }));
+                    const filterResult = !activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; });
+                    conditionalStack.push(filterResult);
+                    executedStack.push(filterResult);
                     break;
                 }
                 case "warning": {
                     if (verbose)
                         console.log("v-021 │ Directive: warning");
-                    let message = currentDirective[1];
-                    // If no warning is specified, return a generic message
-                    if (!message)
-                        message = "Unknown error.";
-                    // Log to stderr and callback
-                    console.error("Warning: " + message);
+                    let print = true;
+                    if (conditionalStack.length > 0) {
+                        if (verbose)
+                            console.log("v-037 │ Conditional stack:", conditionalStack);
+                        conditionalStack.forEach(condition => {
+                            if (!condition)
+                                print = false;
+                            if (verbose)
+                                console.log("v-038 │ Eval:", condition);
+                        });
+                    }
+                    if (print) {
+                        let message = currentDirective[1];
+                        // If no warning is specified, return a generic message
+                        if (!message)
+                            message = "Unknown error.";
+                        // Log to stderr and callback
+                        console.error("Warning: " + message);
+                    }
                     break;
                 }
                 case "error": {
                     if (verbose)
                         console.log("v-022 │ Directive: error");
-                    let message = currentDirective[1];
-                    // If no error is specified, return a generic message
-                    if (!message)
-                        message = "Unknown error.";
-                    // Log to stderr and callback
-                    console.error("Error: " + message);
-                    callback("Error: " + message, null);
+                    let print = true;
+                    if (conditionalStack.length > 0) {
+                        if (verbose)
+                            console.log("v-039 │ Conditional stack:", conditionalStack);
+                        conditionalStack.forEach(condition => {
+                            if (!condition)
+                                print = false;
+                            if (verbose)
+                                console.log("v-040 │ Eval:", condition);
+                        });
+                    }
+                    if (print) {
+                        let message = currentDirective[1];
+                        // If no error is specified, return a generic message
+                        if (!message)
+                            message = "Unknown error.";
+                        // Log to stderr and callback
+                        console.error("Error: " + message);
+                        callback("Error: " + message, null);
+                    }
                     break;
                 }
                 default: {

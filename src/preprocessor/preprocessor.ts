@@ -69,6 +69,9 @@ export function process(input: string[], options: processOptions, callback: (err
 	// eslint-disable-next-line prefer-const
 	let conditionalStack: boolean[] = [];
 
+	// eslint-disable-next-line prefer-const
+	let executedStack: boolean[] = [];
+
 	if (options.macros.length > 0) {
 		options.macros.forEach(macro => {
 			if (macro[0] && macro[1]) {
@@ -174,21 +177,32 @@ export function process(input: string[], options: processOptions, callback: (err
 					const evalResult = evalExpression(currentDirective[1], activeMacros);
 					if (verbose) console.log("v-032 │ Evaluation result:", evalResult);
 					
-					if (evalResult !== null) conditionalStack.push(evalResult);
-					else if (verbose) console.log("v-031 │ Expression is invalid");
+					if (evalResult !== null) {
+						conditionalStack.push(evalResult);
+						executedStack.push(evalResult);
+					} else if (verbose) console.log("v-031 │ Expression is invalid");
 					
 					break;
 				}
 				case "elif": {
 					if (verbose) console.log("v-023 │ Directive: elif");
 
+					console.log(conditionalStack, executedStack);
+					
+					if (executedStack[executedStack.length - 1]) conditionalStack[conditionalStack.length - 1] = false;
+
 					if (conditionalStack.length > 0 && conditionalStack[conditionalStack.length - 1] === false) {
-						conditionalStack.pop();
 
 						const evalResult = evalExpression(currentDirective[1], activeMacros);
 						if (verbose) console.log("v-034 │ Evaluation result:", evalResult);
 
-						if (evalResult !== null) conditionalStack.push(evalResult);
+						if (evalResult !== null) {
+							if (!executedStack[executedStack.length - 1]) {
+								conditionalStack[conditionalStack.length - 1] = evalResult;
+
+							}
+							if (evalResult) executedStack[executedStack.length - 1] = true;
+						}
 						else if (verbose) console.log("v-035 │ Expression is invalid");
 					}
 					
@@ -198,6 +212,7 @@ export function process(input: string[], options: processOptions, callback: (err
 					if (verbose) console.log("v-024 │ Directive: endif");
 					
 					conditionalStack.pop();
+					executedStack.pop();
 					
 					break;
 				}
@@ -205,7 +220,10 @@ export function process(input: string[], options: processOptions, callback: (err
 					if (verbose) console.log("v-025 │ Directive: else");
 					
 					if (conditionalStack.length > 0) {
-						if (conditionalStack[conditionalStack.length - 1] === false) conditionalStack[conditionalStack.length - 1] = true;
+						if (conditionalStack[conditionalStack.length - 1] === false && executedStack[executedStack.length - 1] === false) {
+							conditionalStack[conditionalStack.length - 1] = true;
+						}
+						else conditionalStack[conditionalStack.length - 1] = false;
 					}
 
 					break;
@@ -215,8 +233,10 @@ export function process(input: string[], options: processOptions, callback: (err
 
 					// Go through all the macros and check if the macro we're looking for is defined
 					// and push it to the conditional stack
-					conditionalStack.push(!!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }));
+					const filterResult = !!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; });
 
+					conditionalStack.push(filterResult);
+					executedStack.push(filterResult);
 					break;
 				}
 				case "ifndef": {
@@ -224,7 +244,10 @@ export function process(input: string[], options: processOptions, callback: (err
 
 					// Go through all the macros and check if the macro we're looking for is not defined
 					// and push it to the conditional stack
-					conditionalStack.push(!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }));
+					const filterResult = !activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; });
+
+					conditionalStack.push(filterResult);
+					executedStack.push(filterResult);
 
 					break;
 				}
@@ -338,4 +361,4 @@ export function process(input: string[], options: processOptions, callback: (err
 	callback(null, outputArray);
 }
 
-//36
+// 40
