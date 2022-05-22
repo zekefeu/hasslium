@@ -95,7 +95,9 @@ export function process(input, options, callback) {
                         argumentsArray.shift(),
                         argumentsArray.join(" ") // value
                     ];
-                    if (macro[0] && macro[1]) {
+                    if (macro[0]) {
+                        if (!macro[1])
+                            macro[1] = "true";
                         activeMacros.push(macro);
                         if (verbose)
                             console.log("v-016 │ New macros list:", activeMacros);
@@ -153,13 +155,17 @@ export function process(input, options, callback) {
                 case "ifdef": {
                     if (verbose)
                         console.log("v-011 │ Directive: ifdef");
-                    conditionalStack.push(false);
+                    // Go through all the macros and check if the macro we're looking for is defined
+                    // and push it to the conditional stack
+                    conditionalStack.push(!!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }));
                     break;
                 }
                 case "ifndef": {
                     if (verbose)
                         console.log("v-026 │ Directive: ifndef");
-                    conditionalStack.push(false);
+                    // Go through all the macros and check if the macro we're looking for is not defined
+                    // and push it to the conditional stack
+                    conditionalStack.push(!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }));
                     break;
                 }
                 case "warning": {
@@ -204,9 +210,10 @@ export function process(input, options, callback) {
                 conditionalStack.forEach(condition => {
                     if (!condition)
                         print = false;
-                    console.log("v-028 │ Eval:", condition);
+                    console.log("v-030 │ Eval:", condition);
                 });
             }
+            // Outputs the processed line
             if (print) {
                 // Apply macros
                 activeMacros.forEach(macro => {
@@ -216,6 +223,7 @@ export function process(input, options, callback) {
                 // Does NOT work on multi-line comments and comments at the end of lines
                 if (line && !line.trim().startsWith("//")) {
                     console.log("v-029 │ Pushing", line);
+                    // Push the line to the array that is going to be returned
                     outputFile.push(line);
                 }
             }
