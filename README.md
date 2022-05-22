@@ -1,8 +1,19 @@
 # hasslium: A TS/JS preprocessor based on C's
 
-This project is in early development, but feel free to check it out !
+This project is still in development, but is ready to be used in real projects. Feel free to check it out !
 
 The documentation is under construction, but should be informative enough for now.
+
+## Why ?
+
+This preprocessor is mostly useful for:
+ - Front-end apps
+ - Commercial apps
+ - Demo products
+
+It allows you to include or exclude certain regions of your code (development & debug statements, etc), and to define macros to replace constants you would use all over your project.
+
+It is built around of the C preprocessor's syntax to be easy to understand and to provide a steep learning curve.
 
 ## Installation
 
@@ -29,57 +40,13 @@ hasslium.process(fs.readFileSync("yourFilePath.js").toString().split("\n"), {}, 
 
 ## Features
 
-### TODO
- - for now, everything except directive parsing
- - CLI usage
- - "object-like macros" - defines / undef
- - conditions (if else elif endif etc)
- - include ? useful ?
- - log, error
- - TESTING
- - function macros
- - nesting macros handling
- - ifdef, ifndef
+ - Almost all of the C preprocessor's directives
+ - Fast
+ - Typed
 
 ## GCC's features
 
 [See the original preprocessor's features.](https://gcc.gnu.org/onlinedocs/cpp/index.html)
-
-🔴 - Unimplemented
-
-🟠 - Working prototype (not tested yet)
-
-🟢 - Fully implemented
-
-🟣 - Won't implement (Irrelevant in JS / obsolete / ...)
-
-```
-🟣 #assert:	 	Obsolete Features
-🟠 #define:	 	Object-like Macros
-🟠 #elif:	 	Elif
-🟠 #else:	 	Else
-🟠 #endif:	 	Ifdef
-🟠 #error:	 	Diagnostics
-🟣 #ident:	 	Other Directives
-🟠 #if:	 	Conditional Syntax
-🟠 #ifdef:	 	Ifdef
-🟠 #ifndef:	 	Ifdef
-🟣 #import:	 	Alternatives to Wrapper #ifndef
-🟣 #include:	 	Include Syntax
-🟣 #include_next:	 	Wrapper Headers
-🟣 #line:	 	Line Control
-🟣 #pragma GCC dependency:	 	Pragmas
-🟣 #pragma GCC error:	 	Pragmas
-🟣 #pragma GCC poison:	 	Pragmas
-🟣 #pragma GCC system_header:	 	System Headers
-🟣 #pragma GCC system_header:	 	Pragmas
-🟣 #pragma GCC warning:	 	Pragmas
-🟣 #pragma once:	 	Pragmas
-🟣 #sccs:	 	Other Directives
-🟣 #unassert:	 	Obsolete Features
-🟠 #undef:	 	Undefining and Redefining Macros
-🟠 #warning:	 	Diagnostics
-```
 
 ## Syntax
 
