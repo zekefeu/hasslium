@@ -20,9 +20,11 @@ function hello() {
 
 //# if LOLLMAO = 10
 console.log("lollmao === 3");
+//# else
+console.log("nope.");
 //# endif
 
 hello();
 
-//# warning hello world !
+///# warning hello world !
 ///# error
