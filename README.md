@@ -44,7 +44,7 @@ import * as fs from "fs";
 
 const inputArray: string[] = fs.readFileSync("yourFilePath.js").toString().split("\n");
 
-// hasslim.process(input: string[], options: processOptions, callback: (error: string, output: string[]))
+// hasslium.process(input: string[], options: processOptions, callback: (error: string, output: string[]))
 hasslium.process(inputArray, { macros: [["ENV", "dev"], ["TEST_MACRO", "value"]], verbose: false }, (error, output) => {
 	if (error) {
 		console.error(error);
