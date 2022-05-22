@@ -12,4 +12,15 @@ describe("Preprocessor testing", () => {
 			}
 		);
 	});
+
+	test("Conditions", () => {
+		hasslium.process(
+			fs.readFileSync("./test/assets/conditions.js").toString().split("\n"),	// Source
+			{ macros: [], verbose: true }, 										// Options
+			(error, output) => {													// Callback
+				expect(error).toBeNull();
+				expect(output).toEqual(fs.readFileSync("./test/assets/conditions_result.js").toString().split("\n"));
+			}
+		);
+	});
 });

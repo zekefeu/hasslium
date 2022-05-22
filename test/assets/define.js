@@ -1,7 +1,5 @@
-/**
- * This test checks the preprocessor's ability to define, use and undefine macros.
- * 
- */
+// This test checks the preprocessor's ability to define, use and undefine macros.
+
 //# define DEFINE_1 "Hello world!"
 
 //# define BOOL_TRUE true
