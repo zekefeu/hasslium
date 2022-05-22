@@ -9,7 +9,7 @@ import * as preprocess from "./preprocessor/preprocessor.js";
 import * as fs from "fs";
 
 // eslint-disable-next-line no-constant-condition
-if (false) {
+if (true) {
 	preprocess.process(fs.readFileSync("./test/assets/1.js").toString().split("\n"), { macros: [["hella", "hello"], ["Hoi", "Hi"]], verbose: true }, (error, output) => {
 		if (error) {
 			console.error(error);
