@@ -1,6 +1,6 @@
 # hasslium: A TS/JS preprocessor based on C's
 
-**This project is still in development, but is ready to be used in real projects.** Feel free to check it out !
+**This project is still in development, but it's ready to be used in real projects.** Feel free to check it out, feedback is appreciated !
 
 The documentation is under construction, but should be informative enough for now.
 
@@ -17,7 +17,7 @@ It is built around of the C preprocessor's features and syntax to be easy to und
 
 ## Installation
 
-`$ npm install -D @fuka-g/hasslium`
+`$ npm install -D hasslium`
 
 ## Usage
 
@@ -25,7 +25,7 @@ For now, no CLI support has been added yet. The only way to run it is through a 
 
 The main function takes an array of strings as the input, an `options` object, and a callback
 
-The options object is composed of a `macros` array (see examples below) to define macros before processing your file.
+The options object takes a `macros` array (see examples below) to define macros before processing your file.
 
 You can turn the verbose mode on for debugging purposes, even though the messages are pretty cryptic for now.
 
@@ -39,7 +39,7 @@ export interface processOptions {
 Here's an example:
 
 ```ts
-import * as hasslium from "@fuka-g/hasslium";
+import * as hasslium from "hasslium";
 import * as fs from "fs";
 
 const inputArray: string[] = fs.readFileSync("yourFilePath.js").toString().split("\n");
@@ -70,7 +70,7 @@ All directives must start with `//#` .
 
  - Example: `//# define MACRO token`
 
-You can either use `//# directive` or `//#directive` .
+You can either use `//# directive` or `//#directive`.
 
 ## Directives
 
