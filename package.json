@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
-    "test": "jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,8 @@
     "eslint": "^8.15.0",
     "jest": "^28.1.0",
     "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "@jest/types": "^28.1.0"
   }
 }
