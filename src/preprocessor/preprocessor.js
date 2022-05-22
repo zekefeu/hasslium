@@ -1,4 +1,5 @@
 "use strict";
+import { evalExpression } from "./eval.js";
 /**
  * @deprecated use hasslium.process() instead
  */
@@ -130,7 +131,12 @@ export function process(input, options, callback) {
                 case "if": {
                     if (verbose)
                         console.log("v-010 │ Directive: if");
-                    conditionalStack.push(false);
+                    const evalResult = evalExpression(currentDirective[1], activeMacros);
+                    console.log("v-032 │ Evaluation result:", evalResult);
+                    if (evalResult !== null)
+                        conditionalStack.push(evalResult);
+                    else
+                        console.log("v-031 │ Expression is invalid");
                     break;
                 }
                 case "elif": {

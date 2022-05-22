@@ -1,5 +1,7 @@
 "use strict";
 
+import { evalExpression } from "./eval.js";
+
 export type directiveType = [
 	directive: string,
 	arguments: string
@@ -169,8 +171,12 @@ export function process(input: string[], options: processOptions, callback: (err
 				case "if": {
 					if (verbose) console.log("v-010 │ Directive: if");
 
-					conditionalStack.push(false);
-
+					const evalResult = evalExpression(currentDirective[1], activeMacros);
+					console.log("v-032 │ Evaluation result:", evalResult);
+					
+					if (evalResult !== null) conditionalStack.push(evalResult);
+					else console.log("v-031 │ Expression is invalid");
+					
 					break;
 				}
 				case "elif": {
@@ -292,4 +298,4 @@ export function process(input: string[], options: processOptions, callback: (err
 	callback(null, outputFile);
 }
 
-//30
+//32

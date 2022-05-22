@@ -2,7 +2,7 @@
 
 //# define ERROR_TEST
 
-//#define
+//#define LOLLMAO 10
 
 //#undef
 
@@ -17,6 +17,10 @@ function hello() {
 	//# endif
 
 }
+
+//# if LOLLMAO = 10
+console.log("lollmao === 3");
+//# endif
 
 hello();
 
