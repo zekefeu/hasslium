@@ -8,7 +8,7 @@ describe("Defining macros", () => {
 			{ macros: [["EXTRA_PLANET", "Pluto"]], verbose: false },			// Options
 			(error, output) => {												// Callback
 				expect(error).toBeNull();
-				expect(output).toEqual(fs.readFileSync("./test/assets/define_result.js").toString().split("\n"));
+				expect(output).toEqual(fs.readFileSync("./test/assets/results/define.js").toString().split("\n"));
 			}
 		);
 	});
@@ -21,7 +21,7 @@ describe("Conditions", () => {
 			{ macros: [], verbose: false }, 										// Options
 			(error, output) => {													// Callback
 				expect(error).toBeNull();
-				expect(output).toEqual(fs.readFileSync("./test/assets/conditions_result.js").toString().split("\n"));
+				expect(output).toEqual(fs.readFileSync("./test/assets/results/conditions.js").toString().split("\n"));
 			}
 		);
 	});
@@ -35,7 +35,7 @@ describe("Logging", () => {
 			{ macros: [], verbose: true }, 									// Options
 			(error, output) => {												// Callback
 				expect(error).toBeNull();
-				expect(output).toEqual(fs.readFileSync("./test/assets/logging_result.js").toString().split("\n"));
+				expect(output).toEqual(fs.readFileSync("./test/assets/results/logging.js").toString().split("\n"));
 			}
 		);
 	});
@@ -50,7 +50,7 @@ describe("Miscellaneous", () => {
 			{ macros: [["TEST", "true"], [""]], verbose: true }, 				// Options
 			(error, output) => {												// Callback
 				expect(error).toBeNull();
-				expect(output).toEqual(fs.readFileSync("./test/assets/misc_result.js").toString().split("\n"));
+				expect(output).toEqual(fs.readFileSync("./test/assets/results/misc.js").toString().split("\n"));
 			}
 		);
 	});
@@ -65,7 +65,7 @@ describe("Miscellaneous (no verbose)", () => {
 			{ macros: [], verbose: false }, 											// Options
 			(error, output) => {														// Callback
 				expect(error).toBeNull();
-				expect(output).toEqual(fs.readFileSync("./test/assets/misc_no_verbose_result.js").toString().split("\n"));
+				expect(output).toEqual(fs.readFileSync("./test/assets/results/misc_no_verbose.js").toString().split("\n"));
 			}
 		);
 	});
@@ -79,7 +79,7 @@ describe("Miscellaneous (error test)", () => {
 			fs.readFileSync("./test/assets/misc_error.js").toString().split("\n"),	// Source
 			{ macros: [], verbose: false }, 										// Options
 			(error, output) => {													// Callback
-				console.error(error, output);
+				
 			}
 		);
 	});
