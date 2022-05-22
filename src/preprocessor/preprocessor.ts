@@ -64,7 +64,7 @@ export function process(input: string[], options: processOptions, callback: (err
 	let activeMacros: macroType[] = [];
 
 	// eslint-disable-next-line prefer-const
-	let outputFile: string[] = [];
+	let outputArray: string[] = [];
 
 	// eslint-disable-next-line prefer-const
 	let conditionalStack: boolean[] = [];
@@ -284,30 +284,30 @@ export function process(input: string[], options: processOptions, callback: (err
 					line = line.replaceAll(macro[0], macro[1]);
 				});
 
-				// Prevents empty lines and comment lines from getting pushed to the output file
+				// Prevents empty lines and comment lines from getting pushed to the output array
 				// Does NOT work on multi-line comments and comments at the end of lines
 				if (line && !line.trim().startsWith("//")) {
 					if (verbose) console.log("v-029 │ Pushing", line);
 
 					// Push the line to the array that is going to be returned
-					outputFile.push(line);
+					outputArray.push(line);
 				}
 			}
 		}
 	});
 
 	if (verbose) {
-		if (conditionalStack.length > 0) console.log("v-033 │ Conditional stack not empty at the end of file.");
+		if (conditionalStack.length > 0) console.log("v-033 │ Conditional stack not empty at the end of input.");
 
 		const endTime = new Date();
 		const timeTook = endTime.getTime() - startTime.getTime();
 
 		console.log("\nv-017 │ === Preprocessing took " + timeTook + " ms ===\n");
 	} else {
-		if (conditionalStack.length > 0) console.warn("Warning: Conditional stack not empty at the end of file.");
+		if (conditionalStack.length > 0) console.warn("Warning: Conditional stack not empty at the end of input.");
 	}
 
-	callback(null, outputFile);
+	callback(null, outputArray);
 }
 
 //36
