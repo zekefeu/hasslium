@@ -148,7 +148,6 @@ export function process(input, options, callback) {
                 case "elif": {
                     if (verbose)
                         console.log("v-023 │ Directive: elif");
-                    console.log(conditionalStack, executedStack);
                     if (executedStack[executedStack.length - 1])
                         conditionalStack[conditionalStack.length - 1] = false;
                     if (conditionalStack.length > 0 && conditionalStack[conditionalStack.length - 1] === false) {
