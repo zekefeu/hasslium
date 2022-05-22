@@ -231,8 +231,8 @@ export function process(input: string[], options: processOptions, callback: (err
 
 					// Go through all the macros and check if the macro we're looking for is defined
 					// and push it to the conditional stack
-					const filterResult = !!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; });
-
+					const filterResult = !!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }).length;
+					
 					conditionalStack.push(filterResult);
 					executedStack.push(filterResult);
 					break;
@@ -242,7 +242,7 @@ export function process(input: string[], options: processOptions, callback: (err
 
 					// Go through all the macros and check if the macro we're looking for is not defined
 					// and push it to the conditional stack
-					const filterResult = !activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; });
+					const filterResult = !activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }).length;
 
 					conditionalStack.push(filterResult);
 					executedStack.push(filterResult);
@@ -259,8 +259,6 @@ export function process(input: string[], options: processOptions, callback: (err
 
 						conditionalStack.forEach(condition => {
 							if (!condition) print = false;
-
-							if (verbose) console.log("v-038 │ Eval:", condition);
 						});
 					}
 
@@ -285,8 +283,6 @@ export function process(input: string[], options: processOptions, callback: (err
 
 						conditionalStack.forEach(condition => {
 							if (!condition) print = false;
-
-							if (verbose) console.log("v-040 │ Eval:", condition);
 						});
 					}
 

@@ -190,7 +190,7 @@ export function process(input, options, callback) {
                         console.log("v-011 │ Directive: ifdef");
                     // Go through all the macros and check if the macro we're looking for is defined
                     // and push it to the conditional stack
-                    const filterResult = !!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; });
+                    const filterResult = !!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }).length;
                     conditionalStack.push(filterResult);
                     executedStack.push(filterResult);
                     break;
@@ -200,7 +200,7 @@ export function process(input, options, callback) {
                         console.log("v-026 │ Directive: ifndef");
                     // Go through all the macros and check if the macro we're looking for is not defined
                     // and push it to the conditional stack
-                    const filterResult = !activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; });
+                    const filterResult = !activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }).length;
                     conditionalStack.push(filterResult);
                     executedStack.push(filterResult);
                     break;
@@ -215,8 +215,6 @@ export function process(input, options, callback) {
                         conditionalStack.forEach(condition => {
                             if (!condition)
                                 print = false;
-                            if (verbose)
-                                console.log("v-038 │ Eval:", condition);
                         });
                     }
                     if (print) {
@@ -239,8 +237,6 @@ export function process(input, options, callback) {
                         conditionalStack.forEach(condition => {
                             if (!condition)
                                 print = false;
-                            if (verbose)
-                                console.log("v-040 │ Eval:", condition);
                         });
                     }
                     if (print) {
