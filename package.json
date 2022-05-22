@@ -15,6 +15,7 @@
   "bugs": {
     "url": "https://github.com/fuka-g/hasslium/issues"
   },
+  "keywords": [ "preprocessor", "compiler", "node"],
   "homepage": "https://github.com/fuka-g/hasslium",
   "type": "module",
   "devDependencies": {
