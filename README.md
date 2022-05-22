@@ -1,6 +1,6 @@
 # hasslium: A TS/JS preprocessor based on C's
 
-This project is still in development, but is ready to be used in real projects. Feel free to check it out !
+**This project is still in development, but is ready to be used in real projects.** Feel free to check it out !
 
 The documentation is under construction, but should be informative enough for now.
 
@@ -9,11 +9,11 @@ The documentation is under construction, but should be informative enough for no
 This preprocessor is mostly useful for:
  - Front-end apps
  - Commercial apps
- - Demo products
+ - Products you want to make a demo version of
 
 It allows you to include or exclude certain regions of your code (development & debug statements, etc), and to define macros to replace constants you would use all over your project.
 
-It is built around of the C preprocessor's syntax to be easy to understand and to provide a steep learning curve.
+It is built around of the C preprocessor's features and syntax to be easy to understand and to provide a steep learning curve.
 
 ## Installation
 
@@ -23,13 +23,29 @@ It is built around of the C preprocessor's syntax to be easy to understand and t
 
 For now, no CLI support has been added yet. The only way to run it is through a js script file.
 
-```ts
-// hasslim.process(input: string[], options: processOptions, callback: (error: string, output: string[]))
+The main function takes an array of strings as the input, an `options` object, and a callback
 
+The options object is composed of a `macros` array (see examples below) to define macros before processing your file.
+
+You can turn the verbose mode on for debugging purposes, even though the messages are pretty cryptic for now.
+
+```ts
+export interface processOptions {
+	macros?: macroType[],
+	verbose?: boolean
+}
+```
+
+Here's an example:
+
+```ts
 import * as hasslium from "@fuka-g/hasslium";
 import * as fs from "fs";
 
-hasslium.process(fs.readFileSync("yourFilePath.js").toString().split("\n"), {}, (error, output) => {
+const inputArray: string[] = fs.readFileSync("yourFilePath.js").toString().split("\n");
+
+// hasslim.process(input: string[], options: processOptions, callback: (error: string, output: string[]))
+hasslium.process(inputArray, { macros: [["ENV", "dev"], ["TEST_MACRO", "value"]], verbose: false }, (error, output) => {
 	if (error) {
 		console.error(error);
 	} else {
@@ -42,7 +58,7 @@ hasslium.process(fs.readFileSync("yourFilePath.js").toString().split("\n"), {}, 
 
  - Almost all of the C preprocessor's directives
  - Fast
- - Typed
+ - Tested & typed
 
 ## GCC's features
 
