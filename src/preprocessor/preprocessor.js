@@ -36,6 +36,8 @@ export function process(input, options, callback) {
     let activeMacros = [];
     // eslint-disable-next-line prefer-const
     let outputFile = [];
+    // eslint-disable-next-line prefer-const
+    let conditionalStack = [];
     if (options.macros.length > 0) {
         options.macros.forEach(macro => {
             if (macro[0] && macro[1]) {
@@ -50,10 +52,10 @@ export function process(input, options, callback) {
         console.log("\nv-005 │ === Preprocessing ===\n");
     // Loop through each given line
     input.forEach(line => {
-        if (verbose)
-            console.log("v-006 ├─➤", line);
         // Line without indentation
         const trimmedLine = line.trim();
+        if (verbose)
+            console.log("v-006 ├─➤", trimmedLine);
         if (trimmedLine.startsWith("//#")) {
             // Directive processing & tokenization
             // Get the directive without '//#'
@@ -126,31 +128,38 @@ export function process(input, options, callback) {
                 case "if": {
                     if (verbose)
                         console.log("v-010 │ Directive: if");
+                    conditionalStack.push(false);
                     break;
                 }
                 case "elif": {
                     if (verbose)
                         console.log("v-023 │ Directive: elif");
+                    conditionalStack.pop();
+                    conditionalStack.push(false);
                     break;
                 }
                 case "endif": {
                     if (verbose)
                         console.log("v-024 │ Directive: endif");
+                    conditionalStack.pop();
                     break;
                 }
                 case "else": {
                     if (verbose)
                         console.log("v-025 │ Directive: else");
+                    conditionalStack.pop();
                     break;
                 }
                 case "ifdef": {
                     if (verbose)
                         console.log("v-011 │ Directive: ifdef");
+                    conditionalStack.push(false);
                     break;
                 }
                 case "ifndef": {
                     if (verbose)
                         console.log("v-026 │ Directive: ifndef");
+                    conditionalStack.push(false);
                     break;
                 }
                 case "warning": {
@@ -186,7 +195,30 @@ export function process(input, options, callback) {
         }
         else {
             // Line is not a macro
-            // Apply macro filters, etc
+            // Apply the conditional filter
+            // The conditional directives (if, elif, else etc)
+            // Are represented by a lifo stack array
+            let print = true;
+            if (conditionalStack.length > 0) {
+                console.log("v-028 │ Conditional stack:", conditionalStack);
+                conditionalStack.forEach(condition => {
+                    if (!condition)
+                        print = false;
+                    console.log("v-028 │ Eval:", condition);
+                });
+            }
+            if (print) {
+                // Apply macros
+                activeMacros.forEach(macro => {
+                    line = line.replaceAll(macro[0], macro[1]);
+                });
+                // Prevents empty lines and comment lines from getting pushed to the output file
+                // Does NOT work on multi-line comments and comments at the end of lines
+                if (line && !line.trim().startsWith("//")) {
+                    console.log("v-029 │ Pushing", line);
+                    outputFile.push(line);
+                }
+            }
         }
     });
     if (verbose) {
