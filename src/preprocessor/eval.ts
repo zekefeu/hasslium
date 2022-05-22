@@ -52,5 +52,4 @@ export function evalExpression(expression: string, activeMacros: macroType[]): b
 	else if (operatorEval === "<=") return leftHandOpEval <= rightHandOpEval;
 	else if (operatorEval === ">=") return leftHandOpEval >= rightHandOpEval;
 	else if (operatorEval === ">") return leftHandOpEval > rightHandOpEval;
-	else return null; // Shouldn't happen, but just making sure
 }

@@ -50,6 +50,4 @@ export function evalExpression(expression, activeMacros) {
         return leftHandOpEval >= rightHandOpEval;
     else if (operatorEval === ">")
         return leftHandOpEval > rightHandOpEval;
-    else
-        return null; // Shouldn't happen, but just making sure
 }
