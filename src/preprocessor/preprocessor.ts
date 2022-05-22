@@ -231,26 +231,54 @@ export function process(input: string[], options: processOptions, callback: (err
 				case "warning": {
 					if (verbose) console.log("v-021 │ Directive: warning");
 
-					let message = currentDirective[1];
+					let print = true;
 
-					// If no warning is specified, return a generic message
-					if (!message) message = "Unknown error.";
+					if (conditionalStack.length > 0) {
+						if (verbose) console.log("v-037 │ Conditional stack:", conditionalStack);
 
-					// Log to stderr and callback
-					console.error("Warning: " + message);
+						conditionalStack.forEach(condition => {
+							if (!condition) print = false;
+
+							if (verbose) console.log("v-038 │ Eval:", condition);
+						});
+					}
+
+					if (print) {
+						let message = currentDirective[1];
+	
+						// If no warning is specified, return a generic message
+						if (!message) message = "Unknown error.";
+	
+						// Log to stderr and callback
+						console.error("Warning: " + message);
+					}
 					break;
 				}
 				case "error": {
 					if (verbose) console.log("v-022 │ Directive: error");
 
-					let message = currentDirective[1];
+					let print = true;
 
-					// If no error is specified, return a generic message
-					if (!message) message = "Unknown error.";
+					if (conditionalStack.length > 0) {
+						if (verbose) console.log("v-039 │ Conditional stack:", conditionalStack);
 
-					// Log to stderr and callback
-					console.error("Error: " + message);
-					callback("Error: " + message, null);
+						conditionalStack.forEach(condition => {
+							if (!condition) print = false;
+
+							if (verbose) console.log("v-040 │ Eval:", condition);
+						});
+					}
+
+					if (print) {
+						let message = currentDirective[1];
+	
+						// If no error is specified, return a generic message
+						if (!message) message = "Unknown error.";
+	
+						// Log to stderr and callback
+						console.error("Error: " + message);
+						callback("Error: " + message, null);
+					}
 					break;
 				}
 				default: {
