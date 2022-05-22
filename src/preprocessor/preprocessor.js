@@ -45,7 +45,8 @@ export function process(input, options, callback) {
                 activeMacros.push(macro);
             }
             else {
-                console.log("Error parsing provided macro:", macro);
+                if (verbose)
+                    console.log("v-036 │ Error parsing provided macro:", macro);
             }
         });
     }
@@ -132,18 +133,27 @@ export function process(input, options, callback) {
                     if (verbose)
                         console.log("v-010 │ Directive: if");
                     const evalResult = evalExpression(currentDirective[1], activeMacros);
-                    console.log("v-032 │ Evaluation result:", evalResult);
+                    if (verbose)
+                        console.log("v-032 │ Evaluation result:", evalResult);
                     if (evalResult !== null)
                         conditionalStack.push(evalResult);
-                    else
+                    else if (verbose)
                         console.log("v-031 │ Expression is invalid");
                     break;
                 }
                 case "elif": {
                     if (verbose)
                         console.log("v-023 │ Directive: elif");
-                    conditionalStack.pop();
-                    conditionalStack.push(false);
+                    if (conditionalStack.length > 0 && conditionalStack[conditionalStack.length - 1] === false) {
+                        conditionalStack.pop();
+                        const evalResult = evalExpression(currentDirective[1], activeMacros);
+                        if (verbose)
+                            console.log("v-034 │ Evaluation result:", evalResult);
+                        if (evalResult !== null)
+                            conditionalStack.push(evalResult);
+                        else if (verbose)
+                            console.log("v-035 │ Expression is invalid");
+                    }
                     break;
                 }
                 case "endif": {
@@ -155,7 +165,10 @@ export function process(input, options, callback) {
                 case "else": {
                     if (verbose)
                         console.log("v-025 │ Directive: else");
-                    conditionalStack.pop();
+                    if (conditionalStack.length > 0) {
+                        if (conditionalStack[conditionalStack.length - 1] === false)
+                            conditionalStack[conditionalStack.length - 1] = true;
+                    }
                     break;
                 }
                 case "ifdef": {
@@ -212,11 +225,13 @@ export function process(input, options, callback) {
             // Are represented by a lifo stack array
             let print = true;
             if (conditionalStack.length > 0) {
-                console.log("v-028 │ Conditional stack:", conditionalStack);
+                if (verbose)
+                    console.log("v-028 │ Conditional stack:", conditionalStack);
                 conditionalStack.forEach(condition => {
                     if (!condition)
                         print = false;
-                    console.log("v-030 │ Eval:", condition);
+                    if (verbose)
+                        console.log("v-030 │ Eval:", condition);
                 });
             }
             // Outputs the processed line
@@ -228,7 +243,8 @@ export function process(input, options, callback) {
                 // Prevents empty lines and comment lines from getting pushed to the output file
                 // Does NOT work on multi-line comments and comments at the end of lines
                 if (line && !line.trim().startsWith("//")) {
-                    console.log("v-029 │ Pushing", line);
+                    if (verbose)
+                        console.log("v-029 │ Pushing", line);
                     // Push the line to the array that is going to be returned
                     outputFile.push(line);
                 }
@@ -236,9 +252,15 @@ export function process(input, options, callback) {
         }
     });
     if (verbose) {
+        if (conditionalStack.length > 0)
+            console.log("v-033 │ Conditional stack not empty at the end of file.");
         const endTime = new Date();
         const timeTook = endTime.getTime() - startTime.getTime();
         console.log("\nv-017 │ === Preprocessing took " + timeTook + " ms ===\n");
+    }
+    else {
+        if (conditionalStack.length > 0)
+            console.warn("Warning: Conditional stack not empty at the end of file.");
     }
     callback(null, outputFile);
 }
