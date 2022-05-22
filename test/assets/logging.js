@@ -6,6 +6,6 @@ console.log("nope");
 //# endif
 
 //# ifdef TRUE
-//# warn true
+//# warning true
 console.log("yes");
 //# endif

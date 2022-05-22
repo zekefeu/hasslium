@@ -4,6 +4,17 @@
 //# define FIFTY_SIX 56
 //# define FOURTY_TWO 42
 
+// Shouldn't do anything
+//# if FOURTY_TWO >>>>> FIFTY_SIX
+
+//# if
+//# if 1
+//# if 1 =
+
+//# if 5 != 5
+console.log("nope");
+//# endif
+
 //# if FIFTY_SIX > FOURTY_TWO
 console.log("1");
 //# else
