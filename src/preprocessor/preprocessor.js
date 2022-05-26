@@ -1,5 +1,13 @@
 "use strict";
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
+import { version } from "node:process";
+import { fileURLToPath } from "node:url";
 import { evalExpression } from "./eval.js";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const nodeVersion = version.substring(1, version.length);
+const packageJson = JSON.parse(fs.readFileSync(__dirname + "/../../package.json").toString());
 /**
  * The library's main function. Takes an array of strings and processes it with the given options.
  * @param input The input array
@@ -45,8 +53,18 @@ export function process(input, options, callback) {
             }
         });
     }
-    if (verbose)
+    const buildTime = new Date().getTime().toString();
+    activeMacros.push(["__ORIGIN_PLATFORM__", os.platform()]);
+    activeMacros.push(["__ORIGIN_BUILD_TIME__", buildTime]);
+    activeMacros.push(["__ORIGIN_NODE_VERSION__", nodeVersion]);
+    activeMacros.push(["__HASSLIUM_VERSION__", packageJson.version]);
+    if (verbose) {
+        console.log("\nv-041 │ __ORIGIN_PLATFORM__", os.platform());
+        console.log("v-042 │ __ORIGIN_BUILD_TIME__", buildTime);
+        console.log("v-043 │ __ORIGIN_NODE_VERSION__", nodeVersion);
+        console.log("v-044 │ __ORIGIN_HASSLIUM_VERSION__", packageJson.version);
         console.log("\nv-005 │ === Preprocessing ===\n");
+    }
     // Loop through each given line
     input.forEach(line => {
         // Line without indentation
