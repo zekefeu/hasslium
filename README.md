@@ -4,6 +4,8 @@
 
 The documentation is under construction, but should be informative enough for now.
 
+**A boilerplate is available to see how to use it ->** [fuka-g/hasslium-boilerplate](https://www.github.com/fuka-g/hasslium-boilerplate)
+
 ## Why ?
 
 This preprocessor is mostly useful for:
