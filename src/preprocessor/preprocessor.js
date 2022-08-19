@@ -28,7 +28,7 @@ export function process(input, options, callback) {
         console.log("v-001 │ Verbose mode:", verbose);
         console.log("\nv-002 │ Raw options:", options);
         console.log("\nv-003 │ Defined macros:");
-        options.macros.forEach(macro => {
+        options.macros.forEach((macro) => {
             console.log(`v-013 │ - ${macro[0]}: ${macro[1]}`);
         });
         console.log("\nv-004 │ Input:", input);
@@ -43,7 +43,7 @@ export function process(input, options, callback) {
     // eslint-disable-next-line prefer-const
     let executedStack = [];
     if (options.macros.length > 0) {
-        options.macros.forEach(macro => {
+        options.macros.forEach((macro) => {
             if (macro[0] && macro[1]) {
                 activeMacros.push(macro);
             }
@@ -66,7 +66,7 @@ export function process(input, options, callback) {
         console.log("\nv-005 │ === Preprocessing ===\n");
     }
     // Loop through each given line
-    input.forEach(line => {
+    input.forEach((line) => {
         // Line without indentation
         const trimmedLine = line.trim();
         if (verbose)
@@ -96,7 +96,7 @@ export function process(input, options, callback) {
             // Note to self: currentDirective is an array (tuple ?), not an object
             const currentDirective = [
                 directiveArray.shift(),
-                directiveArray.join(" ") // arguments: put the array back together
+                directiveArray.join(" "), // arguments: put the array back together
             ];
             if (verbose)
                 console.log("v-007 │ Parsed directive:", currentDirective);
@@ -108,7 +108,7 @@ export function process(input, options, callback) {
                     // Defining the macro we want to add
                     const macro = [
                         argumentsArray.shift(),
-                        argumentsArray.join(" ") // value
+                        argumentsArray.join(" "), // value
                     ];
                     if (macro[0]) {
                         if (!macro[1])
@@ -130,7 +130,9 @@ export function process(input, options, callback) {
                     const argumentsArray = currentDirective[1].split(" ");
                     if (argumentsArray[0]) {
                         // Filtering the macros by their key
-                        activeMacros = activeMacros.filter((macro) => { return macro[0] !== argumentsArray[0]; });
+                        activeMacros = activeMacros.filter((macro) => {
+                            return macro[0] !== argumentsArray[0];
+                        });
                         if (verbose) {
                             console.log("v-018 │ Removing macro:", argumentsArray[0]);
                             console.log("v-019 │ New macros list:", activeMacros);
@@ -161,7 +163,8 @@ export function process(input, options, callback) {
                         console.log("v-023 │ Directive: elif");
                     if (executedStack[executedStack.length - 1])
                         conditionalStack[conditionalStack.length - 1] = false;
-                    if (conditionalStack.length > 0 && conditionalStack[conditionalStack.length - 1] === false) {
+                    if (conditionalStack.length > 0 &&
+                        conditionalStack[conditionalStack.length - 1] === false) {
                         const evalResult = evalExpression(currentDirective[1], activeMacros);
                         if (verbose)
                             console.log("v-034 │ Evaluation result:", evalResult);
@@ -188,7 +191,8 @@ export function process(input, options, callback) {
                     if (verbose)
                         console.log("v-025 │ Directive: else");
                     if (conditionalStack.length > 0) {
-                        if (conditionalStack[conditionalStack.length - 1] === false && executedStack[executedStack.length - 1] === false) {
+                        if (conditionalStack[conditionalStack.length - 1] === false &&
+                            executedStack[executedStack.length - 1] === false) {
                             conditionalStack[conditionalStack.length - 1] = true;
                         }
                         else
@@ -201,7 +205,9 @@ export function process(input, options, callback) {
                         console.log("v-011 │ Directive: ifdef");
                     // Go through all the macros and check if the macro we're looking for is defined
                     // and push it to the conditional stack
-                    const filterResult = !!activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }).length;
+                    const filterResult = !!activeMacros.filter((macro) => {
+                        return macro[0] == currentDirective[1];
+                    }).length;
                     conditionalStack.push(filterResult);
                     executedStack.push(filterResult);
                     break;
@@ -211,7 +217,9 @@ export function process(input, options, callback) {
                         console.log("v-026 │ Directive: ifndef");
                     // Go through all the macros and check if the macro we're looking for is not defined
                     // and push it to the conditional stack
-                    const filterResult = !activeMacros.filter((macro) => { return macro[0] == currentDirective[1]; }).length;
+                    const filterResult = !activeMacros.filter((macro) => {
+                        return macro[0] == currentDirective[1];
+                    }).length;
                     conditionalStack.push(filterResult);
                     executedStack.push(filterResult);
                     break;
@@ -223,7 +231,7 @@ export function process(input, options, callback) {
                     if (conditionalStack.length > 0) {
                         if (verbose)
                             console.log("v-037 │ Conditional stack:", conditionalStack);
-                        conditionalStack.forEach(condition => {
+                        conditionalStack.forEach((condition) => {
                             if (!condition)
                                 print = false;
                         });
@@ -245,7 +253,7 @@ export function process(input, options, callback) {
                     if (conditionalStack.length > 0) {
                         if (verbose)
                             console.log("v-039 │ Conditional stack:", conditionalStack);
-                        conditionalStack.forEach(condition => {
+                        conditionalStack.forEach((condition) => {
                             if (!condition)
                                 print = false;
                         });
@@ -278,7 +286,7 @@ export function process(input, options, callback) {
             if (conditionalStack.length > 0) {
                 if (verbose)
                     console.log("v-028 │ Conditional stack:", conditionalStack);
-                conditionalStack.forEach(condition => {
+                conditionalStack.forEach((condition) => {
                     if (!condition)
                         print = false;
                     if (verbose)
@@ -288,7 +296,7 @@ export function process(input, options, callback) {
             // Outputs the processed line
             if (print) {
                 // Apply macros
-                activeMacros.forEach(macro => {
+                activeMacros.forEach((macro) => {
                     line = line.replaceAll(macro[0], macro[1]);
                 });
                 // Prevents empty lines and comment lines from getting pushed to the output array

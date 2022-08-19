@@ -6,7 +6,7 @@ export function evalExpression(expression, activeMacros) {
     // === Left hand evalutaion
     let leftHandOpEval = null;
     // Walk through the macros and attribute the left hand operator it's corresponding value
-    activeMacros.forEach(macro => {
+    activeMacros.forEach((macro) => {
         if (macro[0] == expressionArray[0])
             leftHandOpEval = macro[1];
     });
@@ -16,7 +16,7 @@ export function evalExpression(expression, activeMacros) {
     // === Right hand evaluation
     let rightHandOpEval = null;
     // Walk through the macros and attribute the right hand operator it's corresponding value
-    activeMacros.forEach(macro => {
+    activeMacros.forEach((macro) => {
         if (macro[0] == expressionArray[2])
             rightHandOpEval = macro[1];
     });

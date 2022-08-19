@@ -9,9 +9,10 @@ The documentation is under construction, but should be informative enough for no
 ## Why ?
 
 This preprocessor is mostly useful for:
- - Front-end apps
- - Commercial apps
- - Products you want to make a demo version of
+
+- Front-end apps
+- Commercial apps
+- Products you want to make a demo version of
 
 It allows you to include or exclude certain regions of your code (development & debug statements, etc), and to define macros to replace constants you would use all over your project.
 
@@ -33,8 +34,8 @@ You can turn the verbose mode on for debugging purposes, even though the message
 
 ```ts
 export interface processOptions {
-	macros?: macroType[],
-	verbose?: boolean
+	macros?: macroType[];
+	verbose?: boolean;
 }
 ```
 
@@ -44,23 +45,36 @@ Here's an example:
 import * as hasslium from "hasslium";
 import * as fs from "fs";
 
-const inputArray: string[] = fs.readFileSync("yourFilePath.js").toString().split("\n");
+const inputArray: string[] = fs
+	.readFileSync("yourFilePath.js")
+	.toString()
+	.split("\n");
 
 // hasslium.process(input: string[], options: processOptions, callback: (error: string, output: string[]))
-hasslium.process(inputArray, { macros: [["ENV", "dev"], ["TEST_MACRO", "value"]], verbose: false }, (error, output) => {
-	if (error) {
-		console.error(error);
-	} else {
-		console.log("Output:", output);
+hasslium.process(
+	inputArray,
+	{
+		macros: [
+			["ENV", "dev"],
+			["TEST_MACRO", "value"],
+		],
+		verbose: false,
+	},
+	(error, output) => {
+		if (error) {
+			console.error(error);
+		} else {
+			console.log("Output:", output);
+		}
 	}
-});
+);
 ```
 
 ## Features
 
- - Almost all of the C preprocessor's directives
- - Fast
- - Tested & typed
+- Almost all of the C preprocessor's directives
+- Fast
+- Tested & strongly typed
 
 ## GCC's features
 
@@ -70,7 +84,7 @@ hasslium.process(inputArray, { macros: [["ENV", "dev"], ["TEST_MACRO", "value"]]
 
 All directives must start with `//#` .
 
- - Example: `//# define MACRO token`
+- Example: `//# define MACRO token`
 
 You can either use `//# directive` or `//#directive`.
 
@@ -116,7 +130,7 @@ If a macro is defined / undefined
 
 ## Known bugs
 
-😀
+- Issue relating to TypeScript: the last line of a file is not included if it is a comment. It includes hasslium directives
 
 ## Contributing
 
